@@ -9,12 +9,20 @@ router.get('/', (req, res) => {
     .catch(error => res.status(500).json({ error: error.message }))
 })
 
-// router.get('/:id', (req, res) => {
-//     Projects.get(req.params.id).then(project => {
-//         res.status(200).json(project)
-//     })
-//     .catch(error => res.status(500).json({ error: error.message }))
-// })
+router.get('/:id', (req, res) => {
+    Projects.getProjectById(req.params.id).then(([project]) => {
+        Projects.getTasksForProject(req.params.id).then(tasks => {
+            Projects.getResourcesForProject(req.params.id).then(resources => {
+                res.status(200).json({ data: {
+                    ...project,
+                    tasks: [...tasks],
+                    resources: [...resources]
+                }})
+            })
+        })
+    })
+    .catch(error => res.status(500).json({ error: error.message }))
+})
 
 router.post('/', (req, res) => {
     Projects.add(req.body).then(project => res.status(201).json(project))
@@ -33,6 +41,11 @@ router.get('/:id/resources', (req, res) => {
 
 router.post('/:id/tasks', (req, res) => {
     Projects.addTask(req.params.id, req.body).then(newTask => res.status(201).json(newTask))
+    .catch(error => res.status(500).json({ error: error.message }));
+})
+
+router.post('/:id/resources', (req, res) => {
+    Projects.addResource(req.params.id, req.body).then(([newResource]) => res.status(201).json(newResource))
     .catch(error => res.status(500).json({ error: error.message }));
 })
 
