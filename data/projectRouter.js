@@ -49,4 +49,12 @@ router.post('/:id/resources', (req, res) => {
     .catch(error => res.status(500).json({ error: error.message }));
 })
 
+router.delete('/:id', (req, res) => {
+    Projects.getProjectById(req.params.id).then(([project]) => {
+        Projects.removeProject(req.params.id).then(response => {
+            res.status(200).json(project);
+        })
+    })
+})
+
 module.exports = router;

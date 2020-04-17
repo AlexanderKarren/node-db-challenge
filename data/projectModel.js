@@ -7,7 +7,8 @@ module.exports = {
     getTasksForProject,
     addTask,
     addResource,
-    getResourcesForProject
+    getResourcesForProject,
+    removeProject
 }
 
 function get() {
@@ -37,6 +38,10 @@ function getResourcesForProject(project_id) {
         , 'resources.name'
         , 'resources.description'
         )
+}
+
+function removeProject(project_id) {
+    return db('projects').where('id', project_id).del();
 }
 
 function add(data) {
