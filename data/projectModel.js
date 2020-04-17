@@ -4,7 +4,8 @@ module.exports = {
     get,
     add,
     getTasksForProject,
-    addTask
+    addTask,
+    getResourcesForProject
 }
 
 function getTasksForProject(project_id) {
@@ -16,6 +17,16 @@ function getTasksForProject(project_id) {
         , 'projects.description as project_description'
         , 'tasks.description as task'
         , 'tasks.notes as notes')
+}
+
+function getResourcesForProject(project_id) {
+    return db('project_resources')
+        .where('project_id', project_id)
+        .join('resources', 'project_resources.resource_id', 'resources.id')
+        .select('resources.id'
+        , 'resources.name'
+        , 'resources.description'
+        )
 }
 
 function get() {

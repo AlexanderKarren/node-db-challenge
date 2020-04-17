@@ -26,6 +26,11 @@ router.get('/:id/tasks', (req, res) => {
     .catch(error => res.status(500).json({ error: error.message }))
 })
 
+router.get('/:id/resources', (req, res) => {
+    Projects.getResourcesForProject(req.params.id).then((resources) => res.status(200).json(resources))
+    .catch(error => res.status(500).json({ error: error.message }))
+})
+
 router.post('/:id/tasks', (req, res) => {
     Projects.addTask(req.params.id, req.body).then(newTask => res.status(201).json(newTask))
     .catch(error => res.status(500).json({ error: error.message }));
